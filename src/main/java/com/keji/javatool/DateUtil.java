@@ -1,9 +1,11 @@
 package com.keji.javatool;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -173,6 +175,7 @@ public class DateUtil {
         return Date.from(zonedDateTime.toInstant());
     }
 
+
     /**
      * LocalDateTime类型转为Date
      *
@@ -181,6 +184,26 @@ public class DateUtil {
      */
     public static Date localDateTime2Date(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * date转为LocalDate类型
+     *
+     * @param date date
+     * @return localDate
+     */
+    public static LocalDate date2LocalDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    /**
+     * date转为instant
+     *
+     * @param date date
+     * @return Instant
+     */
+    public static Instant date2Instant(Date date) {
+        return date.toInstant();
     }
 
     /**
@@ -245,6 +268,28 @@ public class DateUtil {
         }
 
         return format(localDateTime2Date(localDateTime), pattern);
+    }
+
+    public static Period betweenPerid(Date startDate, Date endDate) {
+        LocalDate startLocalDate = date2LocalDate(startDate);
+        LocalDate endLocalDate = date2LocalDate(endDate);
+
+        return Period.between(startLocalDate, endLocalDate);
+    }
+
+    /**
+     * 比较两个时间相差多少秒
+     *
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @return 秒
+     */
+    public static long secondBetween(Date startDate, Date endDate) {
+        Instant startInstant = date2Instant(startDate);
+        Instant endInstant = date2Instant(endDate);
+
+        Duration duration = Duration.between(startInstant, endInstant);
+        return duration.getSeconds();
     }
 
 
